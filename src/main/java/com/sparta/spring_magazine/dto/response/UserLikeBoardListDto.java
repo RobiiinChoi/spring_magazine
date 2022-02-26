@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class UserLikeBoardListDto {
-    private Long likesId;
+    private Long likeId;
 
-    public UserLikeBoardListDto(Like likesId) {
-        this.likesId = likesId.getId();
+    public UserLikeBoardListDto(Like likeId) {
+        this.likeId = likeId.getId();
     }
 }

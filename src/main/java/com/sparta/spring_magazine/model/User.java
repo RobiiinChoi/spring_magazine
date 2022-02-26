@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 @Setter
-@Builder
-@AllArgsConstructor
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Table(name = "users")
 public class User {
+
+    protected User() {}
 
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,6 @@ public class User {
 
     @JsonIgnore
     @Column(name = "activated")
-    @Builder.Default
     @ColumnDefault("true")
     private boolean activated = true;
 
@@ -46,6 +45,5 @@ public class User {
     @JoinTable(name = "user_authority", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
-
 
 }

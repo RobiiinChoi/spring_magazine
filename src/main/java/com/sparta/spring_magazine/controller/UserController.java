@@ -6,8 +6,10 @@ import com.sparta.spring_magazine.dto.request.LoginRequestDto;
 import com.sparta.spring_magazine.jwt.JwtFilter;
 import com.sparta.spring_magazine.jwt.TokenProvider;
 import com.sparta.spring_magazine.jwt.UserDetailsImpl;
+import com.sparta.spring_magazine.model.responseEntity.Success;
 import com.sparta.spring_magazine.service.UserService;
 import com.sparta.spring_magazine.util.CustomResponseEntity;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpHeaders;
@@ -40,16 +42,12 @@ public class UserController {
 
     //회원가입 요청
     @PostMapping("/api/register")
-    public ResponseEntity userRegister(@Valid @RequestBody LoginRegisterRequestDto requestDto)
-                                      // @AuthenticationPrincipal UserDetailsImpl userDetails
-    {
-//        if(userDetails!=null){
-//            throw new IllegalArgumentException("이미 로그인 되어 있습니다.");
-//        }
+    public ResponseEntity<Success> userRegister(@Valid @RequestBody LoginRegisterRequestDto requestDto){
         String msg = userService.userRegister(requestDto);
-        return ResponseEntity.ok().body(msg);
+        return new ResponseEntity<>(new Success("success", "회원가입 성공"), HttpStatus.OK);
     }
 
+    // 로그인
     @PostMapping("/api/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequestDto loginDto) {
 

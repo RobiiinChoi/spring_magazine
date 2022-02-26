@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class PostRequestDto {
+
     @NotNull
     private String imgUrl;
 
