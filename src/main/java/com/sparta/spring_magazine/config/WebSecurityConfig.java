@@ -63,6 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/h2-console/**"
                         ,"/favicon.ico"
                         ,"/error"
+                        ,"/swagger-ui/**"
+                        ,"/swagger-resources/**"
+                        ,"/v3/api-docs"
+                        ,"/"
                 );
     }
 
@@ -95,8 +99,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()// 로그인과 회원가입은 열어줌
                 .antMatchers(HttpMethod.GET, "/api/post").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
+                .antMatchers("/").permitAll()
                 .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/register", "/swagger-ui/**", "/v3/**", "/configuration/**", "/swagger*/**", "/webjars/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

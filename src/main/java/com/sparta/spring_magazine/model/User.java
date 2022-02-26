@@ -2,6 +2,7 @@ package com.sparta.spring_magazine.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,7 +35,9 @@ public class User {
 
     @JsonIgnore
     @Column(name = "activated")
-    private boolean activated;
+    @Builder.Default
+    @ColumnDefault("true")
+    private boolean activated = true;
 
     @OneToMany(mappedBy = "user")
     private List<Like> likes = new ArrayList<>();

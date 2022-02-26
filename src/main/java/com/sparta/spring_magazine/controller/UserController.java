@@ -40,11 +40,12 @@ public class UserController {
 
     //회원가입 요청
     @PostMapping("/api/register")
-    public ResponseEntity userRegister(@Valid @RequestBody LoginRegisterRequestDto requestDto,
-                                       @AuthenticationPrincipal UserDetailsImpl userDetails){
-        if(userDetails!=null){
-            throw new IllegalArgumentException("이미 로그인 되어 있습니다.");
-        }
+    public ResponseEntity userRegister(@Valid @RequestBody LoginRegisterRequestDto requestDto)
+                                      // @AuthenticationPrincipal UserDetailsImpl userDetails
+    {
+//        if(userDetails!=null){
+//            throw new IllegalArgumentException("이미 로그인 되어 있습니다.");
+//        }
         String msg = userService.userRegister(requestDto);
         return ResponseEntity.ok().body(msg);
     }
