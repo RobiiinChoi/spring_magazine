@@ -1,5 +1,6 @@
 package com.sparta.spring_magazine.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -12,7 +13,6 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Builder
 @Table(name = "users")
 public class User {
 
@@ -38,7 +38,8 @@ public class User {
     @ColumnDefault("true")
     private boolean activated = true;
 
-    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
     private List<Like> likes = new ArrayList<>();
 
     @ManyToMany
@@ -46,4 +47,12 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
+    @Builder
+    public User(String username, String password, String nickname, boolean activated, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.activated = activated;
+        this.authorities = authorities;
+    }
 }

@@ -9,9 +9,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
-    Optional<User> findByNickname(String nickname);
 
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByUsername(String username);
+
+    @EntityGraph(attributePaths = "authorities")
+    Optional<User> findOneWithAuthoritiesByNickname(String nickname);
 
 }

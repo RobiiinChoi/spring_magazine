@@ -1,5 +1,6 @@
 package com.sparta.spring_magazine.dto;
 
+
 import lombok.*;
 
 @Getter
@@ -9,7 +10,5 @@ import lombok.*;
 @NoArgsConstructor
 public class TokenDto {
 
-    private String username;
     private String token;
 }
-

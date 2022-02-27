@@ -1,10 +1,12 @@
 package com.sparta.spring_magazine.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sparta.spring_magazine.dto.request.PostRequestDto;
+import com.sparta.spring_magazine.dto.request.PostUpdateDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ public class Post extends Timestamped{
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     private User user;
 
     @Column(nullable = false)
@@ -35,6 +37,7 @@ public class Post extends Timestamped{
     @Enumerated(EnumType.STRING)
     private Layout layout;
 
+    @BatchSize(size = 600)
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Like> likes = new ArrayList<>();
 
@@ -43,5 +46,11 @@ public class Post extends Timestamped{
         this.content = requestDto.getContent();
         this.imgUrl = requestDto.getImgUrl();
         this.layout = requestDto.getLayout();
+    }
+
+    public void update(User user, PostUpdateDto updateDto){
+        this.user = user;
+        this.content = updateDto.getContent();
+        this.imgUrl = updateDto.getImgUrl();
     }
 }
