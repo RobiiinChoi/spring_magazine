@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping("/api/register")
     public ResponseEntity<Success> userRegister(@Valid @RequestBody LoginRegisterDto requestDto){
         if(userService.getMyUserWithAuthorities().isPresent()){
-            throw new IllegalArgumentException("로그인이 이미 되어있습니다");
+            throw new IllegalArgumentException("이미 로그인이 되어있습니다");
         }
         userService.userRegister(requestDto);
         return new ResponseEntity<>(new Success("success", "회원가입 성공"), HttpStatus.OK);

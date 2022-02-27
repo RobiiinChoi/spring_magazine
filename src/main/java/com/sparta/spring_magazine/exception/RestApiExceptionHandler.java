@@ -1,5 +1,6 @@
 package com.sparta.spring_magazine.exception;
 
+import com.sparta.spring_magazine.model.responseEntity.Fail;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,61 +16,45 @@ public class RestApiExceptionHandler {
 
     // Valid Check
     @ExceptionHandler(value = { IllegalArgumentException.class })
-    public ResponseEntity<Object> illegal(IllegalArgumentException ex) {
+    public ResponseEntity<Fail> illegal(IllegalArgumentException ex) {
         RestApiException restApiException = new RestApiException();
-        restApiException.setSuccessOrFail("fail");
         restApiException.setHttpStatus(HttpStatus.BAD_REQUEST);
         restApiException.setErrorMessage(ex.getMessage());
 
-        return new ResponseEntity(
-                restApiException,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(new Fail("fail", restApiException), HttpStatus.OK);
     }
 
     // 401
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(value = {AccessDeniedException.class})
-    public ResponseEntity<Object> accessDenied(AccessDeniedException ex) {
+    public ResponseEntity<Fail> accessDenied(AccessDeniedException ex) {
         RestApiException restApiException = new RestApiException();
-        restApiException.setSuccessOrFail("fail");
         restApiException.setHttpStatus(HttpStatus.UNAUTHORIZED);
         restApiException.setErrorMessage(ex.getMessage());
 
-        return new ResponseEntity(
-                restApiException,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(new Fail("fail", restApiException), HttpStatus.OK);
     }
 
     // 403
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = {HttpClientErrorException.Forbidden.class})
-    public ResponseEntity<Object> forbidden(HttpClientErrorException.Forbidden ex) {
+    public ResponseEntity<Fail> forbidden(HttpClientErrorException.Forbidden ex) {
         RestApiException restApiException = new RestApiException();
-        restApiException.setSuccessOrFail("fail");
         restApiException.setHttpStatus(HttpStatus.FORBIDDEN);
         restApiException.setErrorMessage(ex.getMessage());
 
-        return new ResponseEntity(
-                restApiException,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(new Fail("fail", restApiException), HttpStatus.OK);
     }
 
     // 404
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {HttpClientErrorException.NotFound.class})
-    public ResponseEntity<Object> handleApiRequestException(HttpClientErrorException.Forbidden ex) {
+    public ResponseEntity<Fail> handleApiRequestException(HttpClientErrorException.Forbidden ex) {
         RestApiException restApiException = new RestApiException();
-        restApiException.setSuccessOrFail("fail");
         restApiException.setHttpStatus(HttpStatus.FORBIDDEN);
         restApiException.setErrorMessage(ex.getMessage());
 
-        return new ResponseEntity(
-                restApiException,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(new Fail("fail", restApiException), HttpStatus.OK);
     }
 
 }

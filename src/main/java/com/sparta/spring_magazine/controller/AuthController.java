@@ -1,13 +1,16 @@
 package com.sparta.spring_magazine.controller;
 
 import com.sparta.spring_magazine.dto.request.LoginRequestDto;
+import com.sparta.spring_magazine.dto.response.LoginResponseDto;
 import com.sparta.spring_magazine.jwt.JwtFilter;
 import com.sparta.spring_magazine.jwt.TokenProvider;
 import com.sparta.spring_magazine.model.User;
+import com.sparta.spring_magazine.model.responseEntity.LoginSuccess;
 import com.sparta.spring_magazine.repository.UserRepository;
 import com.sparta.spring_magazine.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -33,7 +36,7 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<HashMap> authorize(@Valid @RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<LoginSuccess> authorize(@Valid @RequestBody LoginRequestDto loginRequestDto) {
 
         if(userService.getMyUserWithAuthorities().isPresent()){
             throw new IllegalArgumentException("이미 로그인이 되어있습니다.");
@@ -52,15 +55,13 @@ public class AuthController {
 
         User user = userService.getMyUserWithAuthorities().get();
         String userId = String.valueOf(user.getId());
-        String username = user.getUsername();
-        String nickname = user.getNickname();
 
-        HashMap<String, String> userInfo = new HashMap<>();
-        userInfo.put("token", jwt);
-        userInfo.put("userId", userId);
-        userInfo.put("userEmail", username);
-        userInfo.put("nickname", nickname);
+        LoginResponseDto responseDto = LoginResponseDto.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .nickname(user.getNickname())
+                .build();
 
-        return ResponseEntity.ok(userInfo);
+        return new ResponseEntity<>(new LoginSuccess("success", "로그인 성공", responseDto, jwt), HttpStatus.OK);
     }
 }
