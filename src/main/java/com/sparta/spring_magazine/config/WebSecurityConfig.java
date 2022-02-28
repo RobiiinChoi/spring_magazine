@@ -63,19 +63,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-//                .csrf().disable()
                 .httpBasic().disable()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
-//                .cors()
-//                .and()
-//                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .and()
                 .headers()
                 .frameOptions()
@@ -83,17 +77,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .sessionManagement()
+                // 세션 X
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .authorizeRequests()// 로그인과 회원가입은 열어줌
+                .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post").permitAll()
-                // .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/register", "/swagger-ui/**", "/v2/**", "/configuration/**", "/swagger*/**",
                         "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/api/post/**").permitAll()
                 .anyRequest().authenticated().and()
                 .cors().and()
                 .apply(new JwtSecurityConfig(tokenProvider));
