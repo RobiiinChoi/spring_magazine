@@ -1,4 +1,4 @@
-package com.sparta.spring_magazine.util;
+package com.sparta.spring_magazine.service.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

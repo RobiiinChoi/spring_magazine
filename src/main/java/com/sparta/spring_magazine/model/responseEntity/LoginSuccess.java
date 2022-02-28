@@ -12,5 +12,4 @@ public class LoginSuccess {
     private String result;
     private String message;
     private LoginResponseDto responseDto;
-    private String token;
 }

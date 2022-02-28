@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class Success {
     private String result;
     private String message;
+    private Long userId;
 }

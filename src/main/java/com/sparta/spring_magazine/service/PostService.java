@@ -35,20 +35,20 @@ public class PostService {
     }
 
     // 글 삭제
-    public String deletePost(Long postId, User user){
+    public Long deletePost(Long postId, User user){
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         User writer = post.getUser();
         if (!Objects.equals(user.getId(), writer.getId())){
             throw new IllegalArgumentException("글 작성자만 삭제 가능합니다.");
         }
-        String imgUrl = post.getImgUrl();
+        Long deletePostId = post.getId();
         postRepository.deleteById(postId);
-        return imgUrl;
+        return deletePostId;
     }
 
     // 글 수정
-    public String updatePost(Long postId, PostUpdateDto updateDto, User user){
+    public Long updatePost(Long postId, PostUpdateDto updateDto, User user){
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         User writer = post.getUser();
@@ -59,8 +59,7 @@ public class PostService {
             throw new IllegalArgumentException("글, 사진을 수정해주세요");
         }
         post.update(user, updateDto);
-        String imgUrl = updateDto.getImgUrl();
-        return imgUrl;
+        return postId;
     }
 
     // 전체 게시판 게시물
@@ -95,6 +94,7 @@ public class PostService {
             }
         }
         PostResponseDto showInfo = PostResponseDto.builder()
+                .userId(post.getUser().getId())
                 .postId(post.getId())
                 .nickname(post.getUser().getNickname())
                 .createdAt(post.getCreatedAt())

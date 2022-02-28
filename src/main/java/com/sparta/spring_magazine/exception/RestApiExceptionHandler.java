@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
@@ -52,6 +53,17 @@ public class RestApiExceptionHandler {
     public ResponseEntity<Fail> handleApiRequestException(HttpClientErrorException.Forbidden ex) {
         RestApiException restApiException = new RestApiException();
         restApiException.setHttpStatus(HttpStatus.FORBIDDEN);
+        restApiException.setErrorMessage(ex.getMessage());
+
+        return new ResponseEntity<>(new Fail("fail", restApiException), HttpStatus.OK);
+    }
+
+    // 500
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = {HttpServerErrorException.InternalServerError.class})
+    public ResponseEntity<Fail> accessDenied(HttpServerErrorException.InternalServerError ex) {
+        RestApiException restApiException = new RestApiException();
+        restApiException.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         restApiException.setErrorMessage(ex.getMessage());
 
         return new ResponseEntity<>(new Fail("fail", restApiException), HttpStatus.OK);

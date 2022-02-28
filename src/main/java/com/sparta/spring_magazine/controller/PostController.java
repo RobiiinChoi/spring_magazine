@@ -48,8 +48,8 @@ public class PostController {
             throw new IllegalArgumentException("게시물을 삭제하려면 로그인 하십시오");
         }
         User user = userService.getMyUserWithAuthorities().get();
-        String imgUrl = postService.deletePost(postId, user);
-        return new ResponseEntity<>(new DeleteSuccess("success", "게시물 삭제", imgUrl), HttpStatus.OK);
+        postService.deletePost(postId, user);
+        return new ResponseEntity<>(new DeleteSuccess("success", "게시물 삭제", postId), HttpStatus.OK);
     }
 
     // 게시판 글 수정
@@ -59,8 +59,8 @@ public class PostController {
             throw new IllegalArgumentException("게시물을 삭제하려면 로그인 하십시오");
         }
         User user = userService.getMyUserWithAuthorities().get();
-        String imgUrl = postService.updatePost(postId, updateDto, user);
-        return new ResponseEntity<>(new DeleteSuccess("success", "게시물 업데이트", imgUrl), HttpStatus.OK);
+        postService.updatePost(postId, updateDto, user);
+        return new ResponseEntity<>(new DeleteSuccess("success", "게시물 업데이트", postId), HttpStatus.OK);
     }
 
     // 상세 게시물 보기
@@ -78,7 +78,7 @@ public class PostController {
     @GetMapping("/post")
     public ResponseEntity<AllPostSuccess> readAll(@PageableDefault(size = 5) Pageable pageable){
         Long userId = Long.valueOf(-1); // 원래 guest라는 값을 넣을려고 했는데 type이 Long인걸 까먹음.. 0도 가능한지 확인?
-            if (userService.getMyUserWithAuthorities()!=null){
+            if (userService.getMyUserWithAuthorities().isPresent()){
                 userId = userService.getMyUserWithAuthorities().get().getId();
             }
         List<PostResponseDto> responseDtoList = postService.readAll(pageable, userId);

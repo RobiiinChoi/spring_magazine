@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class AuthController {
     private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
 
@@ -41,7 +41,7 @@ public class AuthController {
         if(userService.getMyUserWithAuthorities().isPresent()){
             throw new IllegalArgumentException("이미 로그인이 되어있습니다.");
         }
-        userService.login(loginRequestDto);
+        // userService.login(loginRequestDto);
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
@@ -60,8 +60,9 @@ public class AuthController {
                 .userId(user.getId())
                 .username(user.getUsername())
                 .nickname(user.getNickname())
+                .token(jwt)
                 .build();
 
-        return new ResponseEntity<>(new LoginSuccess("success", "로그인 성공", responseDto, jwt), HttpStatus.OK);
+        return new ResponseEntity<>(new LoginSuccess("success", "로그인 성공", responseDto), HttpStatus.OK);
     }
 }

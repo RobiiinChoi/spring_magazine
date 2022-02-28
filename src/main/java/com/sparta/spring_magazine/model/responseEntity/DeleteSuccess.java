@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class DeleteSuccess {
     private String result;
     private String message;
-    private String imgUrl;
+    private Long postId;
 }

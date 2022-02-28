@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Builder
 public class PostResponseDto {
+    private final Long userId;
     private final Long postId;
     private final String nickname;
     private final LocalDateTime createdAt;

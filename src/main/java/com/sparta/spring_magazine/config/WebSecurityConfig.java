@@ -89,10 +89,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()// 로그인과 회원가입은 열어줌
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
+                // .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/register", "/swagger-ui/**", "/v2/**", "/configuration/**", "/swagger*/**", "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/api/register", "/swagger-ui/**", "/v2/**", "/configuration/**", "/swagger*/**",
+                        "/webjars/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated().and()
                 .cors().and()
                 .apply(new JwtSecurityConfig(tokenProvider));
@@ -111,4 +112,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
 }

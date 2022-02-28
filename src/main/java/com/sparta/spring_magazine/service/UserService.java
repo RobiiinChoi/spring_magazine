@@ -1,11 +1,10 @@
 package com.sparta.spring_magazine.service;
 
 import com.sparta.spring_magazine.dto.request.LoginRegisterDto;
-import com.sparta.spring_magazine.dto.request.LoginRequestDto;
 import com.sparta.spring_magazine.model.Authority;
 import com.sparta.spring_magazine.model.User;
 import com.sparta.spring_magazine.repository.UserRepository;
-import com.sparta.spring_magazine.util.SecurityUtil;
+import com.sparta.spring_magazine.service.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+
     // 회원가입
     @Transactional
     public User userRegister(LoginRegisterDto requestDto){
@@ -34,6 +34,7 @@ public class UserService {
         if (userRepository.findOneWithAuthoritiesByNickname(requestDto.getNickname()).orElse(null) != null) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
+
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
                 .build();
@@ -57,15 +58,6 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithAuthorities() {
         return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername);
-    }
-
-    // 로그인
-    public void login(LoginRequestDto requestDto){
-        User user = userRepository.findByUsername(requestDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
-        if (!passwordEncoder.matches(user.getPassword(), requestDto.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-        }
     }
 
     public void loginCheck(LoginRegisterDto requestDto){
