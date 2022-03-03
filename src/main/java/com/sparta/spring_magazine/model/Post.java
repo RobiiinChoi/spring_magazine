@@ -6,6 +6,7 @@ import com.sparta.spring_magazine.dto.request.PostUpdateDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
@@ -37,7 +38,6 @@ public class Post extends Timestamped{
     @Enumerated(EnumType.STRING)
     private Layout layout;
 
-    @BatchSize(size = 600)
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Like> likes = new ArrayList<>();
 

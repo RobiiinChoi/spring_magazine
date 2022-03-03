@@ -8,6 +8,7 @@ import com.sparta.spring_magazine.model.Post;
 import com.sparta.spring_magazine.model.User;
 import com.sparta.spring_magazine.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,7 @@ public class PostService {
     }
 
     // 전체 게시판 게시물
+    @Cacheable("boardRead")
     public List<PostResponseDto> readAll(Pageable pageable, Long userId){
 
         List<Post> posts = postRepository.findAllFetched(pageable);

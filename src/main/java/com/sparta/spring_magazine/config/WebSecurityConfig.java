@@ -88,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/register", "/swagger-ui/**", "/v2/**", "/configuration/**", "/swagger*/**",
                         "/webjars/**", "/swagger-resources/**").permitAll()
-                .antMatchers("/api/post/**").permitAll()
+                .antMatchers("/api/post/**").hasRole("USER")
                 .anyRequest().authenticated().and()
                 .cors().and()
                 .apply(new JwtSecurityConfig(tokenProvider));

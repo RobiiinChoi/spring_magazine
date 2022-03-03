@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @Table(name = "users")
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class User {
 
     @JsonIgnore
