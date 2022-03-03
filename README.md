@@ -17,6 +17,9 @@
 - H2 Database
 - MySQL
 
+### ERD
+![10조 ERD](https://user-images.githubusercontent.com/91513499/156567934-519dc752-e8eb-4933-84e2-37bded6dcf98.png)
+
 ### API 목록
 - 회원가입 기능 (/api/registration)
   - 각 항목에 맞는 유효성 검사
